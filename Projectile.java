@@ -32,7 +32,7 @@ public class Projectile{
 		if( visible ){
 			y -= 5;
 		}
-		if( y < 0 ){
+		if( y < -10 ){
 			visible = false;
 		}
 	}

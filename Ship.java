@@ -3,7 +3,7 @@ import java.awt.Graphics;
  
 public class Ship{
     
-	private int x, y, width, height;
+	private int x, y, width, height, lives;
     private Color blue;
      
     public Ship(int x, int y){    
@@ -13,6 +13,7 @@ public class Ship{
         this.height = 50;
          
         blue = new Color(0,0,255);
+		lives = 3;
     }
      
  
@@ -45,6 +46,14 @@ public class Ship{
 		return y;
 	}
 	
+	public int getLives(){
+		return lives;
+	}
+	
+	public void shipDie(){
+		lives --;
+	}
+	
 	public void checkCollision(Enemy e){
 		if( e.getVisible() ){
 			//ship
@@ -61,9 +70,13 @@ public class Ship{
 
 			if( sX+sWidth >= tX && sX <= tX + tWidth  &&  sY+sHeight >= tY && sY <= tY + tHeight ){
 				//set visible of enemy to false
-				System.out.println("die");
+				shipDie();
 			}
 		}
+	}
+	
+	public void changeLives(int num){
+		lives = num;
 	}
      
 }

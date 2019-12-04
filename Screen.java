@@ -17,7 +17,7 @@ public class Screen extends JPanel implements KeyListener{
 	
     public Screen(){
         s1 = new Ship(375,500);
-        p1 = new Projectile(50,300);  
+        p1 = new Projectile(0,0);  
 
 		enemies = new Enemy[5];
 		for(int i = 0;i < enemies.length;i ++){
@@ -55,7 +55,6 @@ public class Screen extends JPanel implements KeyListener{
 		//Draw Enemies
 		for( Enemy each : enemies ){
 			each.drawMe(g);
-			each.move();
 		}
 		
 		//show score
@@ -67,7 +66,18 @@ public class Screen extends JPanel implements KeyListener{
 		}
 		g.setColor(Color.black);
 		g.drawString("Score: " + score,700,500);
+		if( lives > s1.getLives() ){
+			for( Enemy each : enemies ){
+				each.reset();
+			}
+		}
+		lives = s1.getLives();
 		g.drawString("Lives: " + lives,700,515);
+		
+		if( lives == 0 ){
+			g.setColor(Color.red);
+			g.drawString("GAME OVER",375,300);
+		}
     } 
  
  
@@ -80,8 +90,22 @@ public class Screen extends JPanel implements KeyListener{
 			}
 			
 			//check for death
-			for( Enemy each : enemies ){
-				s1.checkCollision(each);
+			if( lives > 0 ){
+				for( Enemy each : enemies ){
+					each.move();
+					if( each.touchBottom() ){
+						lives --;
+						s1.changeLives(lives);
+						for( Enemy each2 : enemies ){
+							each2.reset();
+						}
+					}
+					s1.checkCollision(each);
+				}
+			} else {
+				for( Enemy each : enemies ){
+					each.gameOver();
+				}
 			}
 			
             //wait for .01 second

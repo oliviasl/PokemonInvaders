@@ -5,6 +5,7 @@ import java.awt.Color;
 public class Enemy{
 	
 	private int x, y, width, height;
+	private int setX, setY;
 	private Color green;
 	private boolean visible, zigzag;
 	
@@ -13,6 +14,8 @@ public class Enemy{
 		y = 0;;
 		this.width = 50;
 		this.height = 50;
+		setX = this.x;
+		setY = this.y;
 		
 		green =  new Color(0,255,00);
 		
@@ -74,11 +77,31 @@ public class Enemy{
 		}
 		if( x == 750 ){
 			zigzag = false;
-		} else if ( x == 50 ){
+		} else if ( x == 0 ){
 			zigzag = true;
 		}
 		if( y < 600 ){
 			y ++;
 		}
 	}
+	
+	public void reset(){
+		x = setX;
+		y = setY;
+		visible = true;
+	}
+	
+	public boolean touchBottom(){
+		if( y == 550 ){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void gameOver(){
+		x = -50;
+		y = 0;
+	}
+	
 }
