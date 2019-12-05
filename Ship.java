@@ -75,6 +75,27 @@ public class Ship{
 		}
 	}
 	
+	public void checkCollisionBoss(Boss b){
+		if( b.getVisible() ){
+			//ship
+			int sX = x;
+			int sY = y;
+			int sWidth = width;
+			int sHeight = height;
+		
+			//boss
+			int tX = b.getX();
+			int tY = b.getY();
+			int tWidth = b.getWidth();
+			int tHeight = b.getHeight();
+			
+			if( sX+sWidth >= tX && sX <= tX + tWidth  &&  sY+sHeight >= tY && sY <= tY + tHeight ){
+				//set visible of enemy to false
+				shipDie();
+			}
+		}
+	}
+	
 	public void changeLives(int num){
 		lives = num;
 	}

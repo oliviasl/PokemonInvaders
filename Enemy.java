@@ -7,7 +7,7 @@ public class Enemy{
 	private int x, y, width, height;
 	private int setX, setY;
 	private Color green;
-	private boolean visible, zigzag;
+	private boolean visible, zigzag, moveDownCount;
 	
 	public Enemy(int x){
 		this.x = x;
@@ -20,6 +20,7 @@ public class Enemy{
 		green =  new Color(0,255,00);
 		
 		visible = true;
+		moveDownCount = true;
 		if( (int)(Math.random()*2) == 1 ){
 			zigzag = true;
 		} else {
@@ -81,7 +82,12 @@ public class Enemy{
 			zigzag = true;
 		}
 		if( y < 600 ){
-			y ++;
+			if( moveDownCount ){
+				y ++;
+				moveDownCount = false;
+			} else {
+				moveDownCount = true;
+			}
 		}
 	}
 	
@@ -92,7 +98,7 @@ public class Enemy{
 	}
 	
 	public boolean touchBottom(){
-		if( y == 550 ){
+		if( y == 550 && visible ){
 			return true;
 		} else {
 			return false;
