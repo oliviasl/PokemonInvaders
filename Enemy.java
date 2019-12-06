@@ -1,25 +1,33 @@
 import java.awt.Graphics;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 
 public class Enemy{
 	
 	private int x, y, width, height;
-	private int setX, setY;
+	private int resetX, resetY;
 	private Color green;
 	private boolean visible, zigzag, moveDownCount;
+	private ImageIcon squirtle;
 	
 	public Enemy(int x){
+		//set dimensions
 		this.x = x;
 		y = 0;;
 		this.width = 50;
 		this.height = 50;
-		setX = this.x;
-		setY = this.y;
+		resetX = this.x;
+		resetY = this.y;
 		
+		//set image logistics
 		green =  new Color(0,255,00);
-		
 		visible = true;
+		
+		//image icon
+		squirtle = new ImageIcon("ImageAssets/Squirtle.png");
+		
+		//set moving variables
 		moveDownCount = true;
 		if( (int)(Math.random()*2) == 1 ){
 			zigzag = true;
@@ -31,8 +39,7 @@ public class Enemy{
 	
 	public void drawMe(Graphics g){
 		if( visible ){
-			g.setColor(green);
-			g.fillRect(x,y,width,height);
+			squirtle.paintIcon(null,g,x,y);
 		}
 	}
 	
@@ -92,8 +99,8 @@ public class Enemy{
 	}
 	
 	public void reset(){
-		x = setX;
-		y = setY;
+		x = resetX;
+		y = resetY;
 		visible = true;
 	}
 	

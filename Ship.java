@@ -1,16 +1,20 @@
 import java.awt.Color;
 import java.awt.Graphics;
- 
+import javax.swing.ImageIcon; 
+
 public class Ship{
     
 	private int x, y, width, height, lives;
     private Color blue;
+    private ImageIcon pikachu;
      
     public Ship(int x, int y){    
         this.x = x;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
+        this.width = 65;
+        this.height = 65;
+        
+        pikachu = new ImageIcon("ImageAssets/Pikachu.png");
          
         blue = new Color(0,0,255);
 		lives = 3;
@@ -18,8 +22,7 @@ public class Ship{
      
  
     public void drawMe(Graphics g){
-        g.setColor(blue);
-        g.fillRect(x,y,width,height);
+        pikachu.paintIcon(null,g,x,y);
     }
 	
 	
@@ -50,15 +53,12 @@ public class Ship{
 		return lives;
 	}
 	
-	public void shipDie(){
-		lives --;
-	}
 	
 	public void checkCollision(Enemy e){
 		if( e.getVisible() ){
 			//ship
-			int sX = x;
-			int sY = y;
+			int sX = x + 2;
+			int sY = y + 2;
 			int sWidth = width;
 			int sHeight = height;
 		
@@ -70,7 +70,7 @@ public class Ship{
 
 			if( sX+sWidth >= tX && sX <= tX + tWidth  &&  sY+sHeight >= tY && sY <= tY + tHeight ){
 				//set visible of enemy to false
-				shipDie();
+				lives --;
 			}
 		}
 	}
@@ -84,14 +84,14 @@ public class Ship{
 			int sHeight = height;
 		
 			//boss
-			int tX = b.getX();
+			int tX = b.getX() + 40;
 			int tY = b.getY();
 			int tWidth = b.getWidth();
 			int tHeight = b.getHeight();
 			
 			if( sX+sWidth >= tX && sX <= tX + tWidth  &&  sY+sHeight >= tY && sY <= tY + tHeight ){
 				//set visible of enemy to false
-				shipDie();
+				lives --;
 			}
 		}
 	}

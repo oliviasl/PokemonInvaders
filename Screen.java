@@ -18,7 +18,7 @@ public class Screen extends JPanel implements KeyListener{
 	
     public Screen(){
         s1 = new Ship(375,500);
-        p1 = new Projectile(0,0);  
+        p1 = new Projectile(-20,0);  
 		boss = new Boss();
 
 		enemies = new Enemy[10];
@@ -94,7 +94,7 @@ public class Screen extends JPanel implements KeyListener{
 		g.drawString("Level: " + level,700,530);
 		
 		//Game over
-		if( lives == 0 ){
+		if( lives <= 0 ){
 			g.setColor(Color.red);
 			g.drawString("GAME OVER",375,300);
 		}
@@ -118,8 +118,12 @@ public class Screen extends JPanel implements KeyListener{
 			
 			//projectile
 			p1.moveUp();
-			for( Enemy each : enemies ){
-				p1.checkCollision(each);
+			if( level == 1 || level == 2 ){
+				for( Enemy each : enemies ){
+					p1.checkCollision(each);
+				}
+			} else  if ( level == 3 ){
+				p1.checkCollisionBoss(boss);
 			}
 			
 			//update score
@@ -147,7 +151,7 @@ public class Screen extends JPanel implements KeyListener{
 				if( lives > 0 ){
 					for( Enemy each : enemies ){
 						each.move();
-						//checking if it touches the bottom
+						//checking if enemies touches the bottom
 						if( each.touchBottom() ){
 							lives --;
 							s1.changeLives(lives);
@@ -155,10 +159,11 @@ public class Screen extends JPanel implements KeyListener{
 								each2.reset();
 							}
 						}
-						//checking if it touches the player
+						//checking if enemies touches the player
 						s1.checkCollision(each);
 					}
-				} else /*no lives left*/{
+				} else {
+					//no lives left
 					for( Enemy each : enemies ){
 						each.gameOver();
 					}
@@ -166,15 +171,23 @@ public class Screen extends JPanel implements KeyListener{
 			} else if ( level == 3 ){
 				if( lives > 0 ){
 					boss.move();
+					//checking if boss touches the bottom
 					if( boss.touchBottom() ){
 						lives --;
 						s1.changeLives(lives);
 						boss.reset();
-						s1.checkCollisionBoss(boss);
 					}
+					//checking if boss touches the player
+					s1.checkCollisionBoss(boss);
 				} else {
+					//no lives left
 					boss.gameOver();
 				}
+			}
+			//in case lives goes below 0
+			if( lives < 0 ){
+				lives = 0;
+				s1.changeLives(lives);
 			}
 			
 			//level cleared
@@ -186,7 +199,8 @@ public class Screen extends JPanel implements KeyListener{
 						each.reset();
 					}
 					level = 2;
-					resetLives();
+					lives = 3;
+					s1.changeLives(lives);
 					betweenLevelDelay = 0;
 				}
 			} else if ( score == 10 && level == 2 ){
@@ -197,8 +211,10 @@ public class Screen extends JPanel implements KeyListener{
 					betweenLevelDelay ++;
 				} else {
 					level = 3;
-					resetLives();
+					lives = 3;
+					s1.changeLives(lives);
 					boss.reset();
+					betweenLevelDelay = 0;
 				}
 			} else if ( score == 1 && level == 3 ){
 				boss.gameOver();
@@ -228,7 +244,7 @@ public class Screen extends JPanel implements KeyListener{
 		} else if( e.getKeyCode() == 39 /*right arrow*/ ){
 			//move player down
 			s1.moveRight();
-		} else if( e.getKeyCode() == 80 /*p*/ ){
+		} else if( e.getKeyCode() == 80 /*p, cheat key*/ ){
 			if( level == 1 ){
 				for(int i = 0;i < enemies.length;i += 2){
 					enemies[i].die();
@@ -249,11 +265,6 @@ public class Screen extends JPanel implements KeyListener{
 	
 	//override
 	public void keyTyped(KeyEvent e){
-	}
-	
-	//reset lives
-	public void resetLives(){
-		lives = 3;
 	}
  
 }

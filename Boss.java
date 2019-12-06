@@ -1,28 +1,35 @@
 import java.awt.Graphics;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class Boss{
 	
 	private int x, y, width, height;
 	private boolean zigzag, visible, moveDownCount;
 	private Color purple;
+	private ImageIcon blastoise;
 	
 	public Boss(){
-		x = -100;
+		x = -200;
 		y = 0;
-		width = 100;
-		height = 100;
+		width = 160;
+		height = 170;
 		
 		zigzag = true;
 		visible = true;
 		moveDownCount = true;
 		
 		purple = new Color(102,0,153);
+		
+		blastoise = new ImageIcon("ImageAssets/Blastoise.png");
 	}
 	
 	public void drawMe(Graphics g){
+		blastoise.paintIcon(null,g,x,y);
+		/* 
 		g.setColor(purple);
 		g.fillRect(x,y,width,height);
+		*/
 	}
 	
 	public void move(){
@@ -80,7 +87,7 @@ public class Boss{
 	}
 	
 	public void gameOver(){
-		x = -100;
+		x = -200;
 		y = 0;
 	}
 	
