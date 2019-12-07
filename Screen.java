@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
- 
+import java.awt.Font;
  
 public class Screen extends JPanel implements KeyListener{
  
@@ -14,6 +14,8 @@ public class Screen extends JPanel implements KeyListener{
 	private Boss boss;
 	private boolean visible;
 	private int score, lives, level, betweenLevelDelay;
+	private Color ocean1, ocean2, ocean3, grayPillar;
+	private Font levelCleared;
     
 	
     public Screen(){
@@ -32,6 +34,15 @@ public class Screen extends JPanel implements KeyListener{
 		score = 0;
 		betweenLevelDelay = 0;
 		
+		//colors
+		ocean1 = new Color(54,181,255);
+		ocean2 = new Color(79,147,184);
+		ocean3 = new Color(40,85,122);
+		grayPillar = new Color(53,50,94);
+		
+		//fonts
+		levelCleared = new Font("TimesRoman", Font.BOLD, 15);
+		
 		setFocusable(true);
 		addKeyListener(this);
     }
@@ -47,8 +58,26 @@ public class Screen extends JPanel implements KeyListener{
         super.paintComponent(g);
 		
 		//background
-        g.setColor(Color.white);
-        g.fillRect(0,0,800,600);     
+		g.setColor(ocean1);
+		g.fillRect(0,0,800,600);  
+		if( level == 1 ){
+			g.setColor(ocean2);
+			g.fillArc(-200,400,700,500,0,180);
+			g.setColor(ocean3);
+			g.fillArc(300,450,700,450,0,180);
+		} else if ( level == 2 ){
+			g.setColor(ocean2);
+			g.fillPolygon(new int[] {-100,450,125},new int[] {620,620,225},3);
+			g.setColor(ocean3);
+			g.fillPolygon(new int[] {350,1000,675},new int[] {620,620,275},3);
+		} else if ( level == 3 ){
+			g.setColor(grayPillar);
+			g.fillRect(50,0,30,600);
+			g.fillRect(100,0,30,600);
+			g.fillRect(720,0,30,600);
+			g.fillRect(670,0,30,600);
+			g.fillRect(0,0,800,60);
+		}
      
         //Draw ship
         s1.drawMe(g);
@@ -71,7 +100,7 @@ public class Screen extends JPanel implements KeyListener{
 		}
 		
 		//show score
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		g.drawString("Score: " + score,700,500);
 		
 		//show lives
@@ -87,10 +116,11 @@ public class Screen extends JPanel implements KeyListener{
 			}
 		}
 		lives = s1.getLives();
+		g.setColor(Color.white);
 		g.drawString("Lives: " + lives,700,515);
 		
 		//show level
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		g.drawString("Level: " + level,700,530);
 		
 		//Game over
@@ -100,15 +130,22 @@ public class Screen extends JPanel implements KeyListener{
 		}
 		
 		//level cleared and move to level 2
+		g.setFont(levelCleared);
 		if( score == 5 && level == 1 ){
+			g.setColor(Color.white);
+			g.fillRoundRect(320,275,175,40,20,20);
 			g.setColor(Color.green);
-			g.drawString("LEVEL 1 CLEARED",350,300);
+			g.drawString("LEVEL 1 CLEARED",340,300);
 		} else if ( score == 10 && level == 2 ){
+			g.setColor(Color.white);
+			g.fillRoundRect(320,275,175,40,20,20);
 			g.setColor(Color.green);
-			g.drawString("LEVEL 2 CLEARED",350,300);
+			g.drawString("LEVEL 2 CLEARED",340,300);
 		} else if ( score == 1 && level == 3 ){
+			g.setColor(Color.white);
+			g.fillRoundRect(320,275,175,40,20,20);
 			g.setColor(Color.green);
-			g.drawString("LEVEL 3 CLEARED",350,300);
+			g.drawString("LEVEL 3 CLEARED",340,300);
 		}
     } 
  
@@ -195,10 +232,11 @@ public class Screen extends JPanel implements KeyListener{
 				if( betweenLevelDelay < 101 ){
 					betweenLevelDelay ++;
 				} else {
+					level = 2;
 					for( Enemy each : enemies ){
 						each.reset();
+						each.setLevel(level);
 					}
-					level = 2;
 					lives = 3;
 					s1.changeLives(lives);
 					betweenLevelDelay = 0;

@@ -1,12 +1,10 @@
 import java.awt.Graphics;
-import java.awt.Color;
 import javax.swing.ImageIcon;
 
 public class Boss{
 	
 	private int x, y, width, height;
 	private boolean zigzag, visible, moveDownCount;
-	private Color purple;
 	private ImageIcon blastoise;
 	
 	public Boss(){
@@ -19,17 +17,11 @@ public class Boss{
 		visible = true;
 		moveDownCount = true;
 		
-		purple = new Color(102,0,153);
-		
 		blastoise = new ImageIcon("ImageAssets/Blastoise.png");
 	}
 	
 	public void drawMe(Graphics g){
 		blastoise.paintIcon(null,g,x,y);
-		/* 
-		g.setColor(purple);
-		g.fillRect(x,y,width,height);
-		*/
 	}
 	
 	public void move(){
@@ -38,7 +30,7 @@ public class Boss{
 		} else {
 			x --;
 		}
-		if( x == 700 ){
+		if( x == 600 ){
 			zigzag = false;
 		} else if ( x == 0 ){
 			zigzag = true;
@@ -92,7 +84,7 @@ public class Boss{
 	}
 	
 	public boolean touchBottom(){
-		if( y > 499 ){
+		if( y > 399 ){
 			return true;
 		}
 		return false;

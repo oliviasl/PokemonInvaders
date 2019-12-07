@@ -6,10 +6,10 @@ import javax.swing.ImageIcon;
 public class Enemy{
 	
 	private int x, y, width, height;
-	private int resetX, resetY;
+	private int resetX, resetY, level;
 	private Color green;
 	private boolean visible, zigzag, moveDownCount;
-	private ImageIcon squirtle;
+	private ImageIcon squirtle, wartortle;
 	
 	public Enemy(int x){
 		//set dimensions
@@ -23,9 +23,11 @@ public class Enemy{
 		//set image logistics
 		green =  new Color(0,255,00);
 		visible = true;
+		level = 1;
 		
 		//image icon
 		squirtle = new ImageIcon("ImageAssets/Squirtle.png");
+		wartortle = new ImageIcon("ImageAssets/Wartortle.png");
 		
 		//set moving variables
 		moveDownCount = true;
@@ -39,7 +41,11 @@ public class Enemy{
 	
 	public void drawMe(Graphics g){
 		if( visible ){
-			squirtle.paintIcon(null,g,x,y);
+			if( level == 1 ){
+				squirtle.paintIcon(null,g,x,y);
+			} else if ( level == 2 ){
+				wartortle.paintIcon(null,g,x,y);
+			}
 		}
 	}
 	
@@ -115,6 +121,10 @@ public class Enemy{
 	public void gameOver(){
 		x = -50;
 		y = 0;
+	}
+	
+	public void setLevel(int num){
+		level = num;
 	}
 	
 }
