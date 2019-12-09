@@ -1,10 +1,11 @@
 import java.awt.Graphics;
+import java.awt.Color;
 import javax.swing.ImageIcon;
 
 public class Boss{
 	
-	private int x, y, width, height;
-	private boolean zigzag, visible, moveDownCount;
+	private int x, y, width, height, health, moveDownCount;
+	private boolean zigzag, visible;
 	private ImageIcon blastoise;
 	
 	public Boss(){
@@ -12,16 +13,48 @@ public class Boss{
 		y = 0;
 		width = 160;
 		height = 170;
+		health = 5;
+		moveDownCount = 3;
 		
 		zigzag = true;
 		visible = true;
-		moveDownCount = true;
 		
 		blastoise = new ImageIcon("ImageAssets/Blastoise.png");
 	}
 	
 	public void drawMe(Graphics g){
 		blastoise.paintIcon(null,g,x,y);
+		
+		//health bar
+		if( health == 5 ){
+			g.setColor(Color.green);
+			for(int i = 0;i < 10;i ++){
+				g.fillRect(x+40+(i*12),y-25,10,10);
+			}
+		} else if ( health == 4 ){
+			g.setColor(Color.green);
+			for(int i = 0;i < 8;i ++){
+				g.fillRect(x+40+(i*12),y-25,10,10);
+			}
+		} else if ( health == 3 ){
+			g.setColor(Color.yellow);
+			for(int i = 0;i < 6;i ++){
+				g.fillRect(x+40+(i*12),y-25,10,10);
+			}
+		} else if ( health == 2 ){
+			g.setColor(Color.yellow);
+			for(int i = 0;i < 4;i ++){
+				g.fillRect(x+40+(i*12),y-25,10,10);
+			}
+		} else if ( health == 1 ){
+			g.setColor(Color.red);
+			for(int i = 0;i < 2;i ++){
+				g.fillRect(x+40+(i*12),y-25,10,10);
+			}
+		} else if ( health <= 0 ){
+			die();
+		}
+		
 	}
 	
 	public void move(){
@@ -36,11 +69,11 @@ public class Boss{
 			zigzag = true;
 		}
 		if( y < 600 ){
-			if( moveDownCount ){
+			if( moveDownCount == 3 ){
 				y ++;
-				moveDownCount = false;
+				moveDownCount = 1;
 			} else {
-				moveDownCount = true;
+				moveDownCount ++;
 			}
 		}
 	}
@@ -49,6 +82,8 @@ public class Boss{
 		x = 350;
 		y = 0;
 		zigzag = true;
+		health = 5;
+		visible = true;
 	}
 	
 	public void die(){
@@ -88,6 +123,10 @@ public class Boss{
 			return true;
 		}
 		return false;
+	}
+	
+	public void loseHealth(){
+		health --;
 	}
 	
 }

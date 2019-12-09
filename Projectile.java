@@ -39,6 +39,10 @@ public class Projectile{
 			visible = false;
 		}
 	}
+	
+	public void hit(){
+		visible = false;
+	}
      
      
     public void shoot(){
@@ -90,11 +94,16 @@ public class Projectile{
 			int tHeight = b.getHeight();
 
 			if( pX+pWidth >= tX && pX <= tX + tWidth  &&  pY+pHeight >= tY && pY <= tY + tHeight ){
-				//set visible of boss to false
-				b.die();
+				//lose health, set visible to false
+				hit();
+				setPosition(-20,500);
+				b.loseHealth();
 			}
 		}
 	}
- 
+ 	
+ 	public boolean getVisible(){
+ 		return visible;
+ 	}
  
 }

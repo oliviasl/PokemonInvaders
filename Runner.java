@@ -9,8 +9,8 @@ public class Runner {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         Screen sc = new Screen();
-         
         frame.add(sc);
+        
         frame.pack();
         frame.setVisible(true);
          
