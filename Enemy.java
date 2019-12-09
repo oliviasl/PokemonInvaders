@@ -121,7 +121,6 @@ public class Enemy{
 	public void gameOver(){
 		x = 850;
 		y = 0;
-		visible = true;
 	}
 	
 	public void setLevel(int num){
