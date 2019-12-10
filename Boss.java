@@ -6,7 +6,8 @@ public class Boss{
 	
 	private int x, y, width, height, health, moveDownCount;
 	private boolean zigzag, visible;
-	private ImageIcon blastoise;
+	private String gameMode;
+	private ImageIcon blastoise, charizard, venusaur;
 	
 	public Boss(){
 		x = -200;
@@ -15,11 +16,14 @@ public class Boss{
 		height = 170;
 		health = 5;
 		moveDownCount = 3;
+		gameMode = "easy";
 		
 		zigzag = true;
 		visible = true;
 		
 		blastoise = new ImageIcon("ImageAssets/Blastoise.png");
+		charizard = new ImageIcon("ImageAssets/Charizard.png");
+		venusaur = new ImageIcon("ImageAssets/Venusaur.png");
 	}
 	
 	public void drawMe(Graphics g){
@@ -127,6 +131,10 @@ public class Boss{
 	
 	public void loseHealth(){
 		health --;
+	}
+	
+	public void updateGameMode(String mode){
+		gameMode = mode;
 	}
 	
 }

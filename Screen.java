@@ -21,11 +21,13 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 	private Enemy[] enemies;
 	private Boss boss;
 	private boolean visible;
+	private String gameMode;
 	private int score, lives, level, betweenLevelDelay, countDown, beforeLevelDelay, projectileCount;
 	private Color green, ocean1, ocean2, ocean3, sand1, sand2, grayPillar1, grayPillar2;
+	private Color lava1, lava2, lava3, ground1, ground2;
 	private Font levelCleared;
 	private GradientPaint oceanGradient;
-	private JButton startEasy, returnToTitleScreen;
+	private JButton start, returnToTitleScreen, easyButton, mediumButton, hardButton;
 	private ImageIcon pokeInvadersLogo, pokemon1, pokemon2, pokemon3, pokemonStart, winPikachu, losePikachu;
 	private ImageIcon youWin, gameOver, gameOverMessage;
     
@@ -53,6 +55,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		countDown = 3;
 		beforeLevelDelay = 0;
 		projectileCount = 0;
+		gameMode = "easy";
 		
 		//colors
 		green = new Color(18,194,16);
@@ -63,6 +66,11 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		sand2 = new Color(222,178,75);
 		grayPillar1 = new Color(69,85,99);
 		grayPillar2 = new Color(56,70,82);
+		lava1 = new Color(255,110,20);
+		lava2 = new Color(222,33,0);
+		lava3 = new Color(209,21,0);
+		ground1 = new Color(130,59,21);
+		ground2 = new Color(112,23,1);
 		
 		//fonts
 		levelCleared = new Font("TimesRoman", Font.BOLD, 15);
@@ -71,10 +79,25 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		oceanGradient = new GradientPaint(0,0,ocean1,0,600,ocean2);
 		
 		//buttons
-		startEasy = new JButton("START");
-		startEasy.setBounds(350,450,100,50);
-		add(startEasy);
-		startEasy.addActionListener(this);
+		start = new JButton("START");
+		start.setBounds(350,500,100,50);
+		add(start);
+		start.addActionListener(this);
+		
+		easyButton = new JButton("EASY");
+		easyButton.setBounds(150,400,100,50);
+		add(easyButton);
+		easyButton.addActionListener(this);
+		
+		mediumButton = new JButton("MEDIUM");
+		mediumButton.setBounds(350,400,100,50);
+		add(mediumButton);
+		mediumButton.addActionListener(this);
+		
+		hardButton = new JButton("HARD");
+		hardButton.setBounds(550,400,100,50);
+		add(hardButton);
+		hardButton.addActionListener(this);
 		
 		returnToTitleScreen = new JButton("RETURN TO TITLE SCREEN");
 		returnToTitleScreen.setBounds(300,220,200,50);
@@ -111,41 +134,11 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		
 		Graphics2D g2 = (Graphics2D) g;
 		
-		//background features
+		//background levels 0, 4, 5
 		if( level == 0 ){
 			g.setColor(Color.white);
 			g.fillRect(0,0,800,600);
 			pokeInvadersLogo.paintIcon(null,g,100,100);
-		} else if( level == 1 ){
-        	g2.setPaint(oceanGradient);
-        	g2.fill(new Rectangle2D.Double(0,0,800,600));	
-			g.setColor(sand2);
-			g.fillArc(-200,400,700,500,0,180);
-			g.setColor(sand1);
-			g.fillArc(300,450,700,450,0,180);
-		} else if ( level == 2 ){
-			g2.setPaint(oceanGradient);
-        	g2.fill(new Rectangle2D.Double(0,0,800,600));
-			g.setColor(ocean3);
-			g.fillPolygon(new int[] {-150,600,150},new int[] {600,600,275},3);
-			g.setColor(ocean2);
-			g.fillPolygon(new int[] {200,875,650},new int[] {600,600,325},3);
-		} else if ( level == 3 ){
-			g2.setPaint(oceanGradient);
-        	g2.fill(new Rectangle2D.Double(0,0,800,600));
-			g.setColor(sand1);
-			g.fillArc(0,500,800,200,0,180);
-			g.setColor(grayPillar1);
-			g.fillRect(25,0,50,600);
-			g.fillRect(110,0,50,600);
-			g.fillRect(715,0,50,600);
-			g.fillRect(630,0,50,600);
-			g.setColor(grayPillar2);
-			g.fillRect(35,80,50,520);
-			g.fillRect(120,80,50,520);
-			g.fillRect(725,80,50,520);
-			g.fillRect(640,80,50,520);
-			g.fillRect(0,0,800,80);
 		} else if ( level == 4 ){
 			g.setColor(Color.green);
 			g.fillRect(0,0,800,600);
@@ -158,6 +151,72 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			losePikachu.paintIcon(null,g,100,280);
 			gameOver.paintIcon(null,g,100,50);
 			returnToTitleScreen.setVisible(true);
+		}
+		//background  levels 1, 2, 3
+		if( gameMode == "easy" ){
+			if( level == 1 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));	
+				g.setColor(sand2);
+				g.fillArc(-200,400,700,500,0,180);
+				g.setColor(sand1);
+				g.fillArc(300,450,700,450,0,180);
+			} else if ( level == 2 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(ocean3);
+				g.fillPolygon(new int[] {-150,600,150},new int[] {600,600,275},3);
+				g.setColor(ocean2);
+				g.fillPolygon(new int[] {200,875,650},new int[] {600,600,325},3);
+			} else if ( level == 3 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(sand1);
+				g.fillArc(0,500,800,200,0,180);
+				g.setColor(grayPillar1);
+				g.fillRect(25,0,50,600);
+				g.fillRect(110,0,50,600);
+				g.fillRect(715,0,50,600);
+				g.fillRect(630,0,50,600);
+				g.setColor(grayPillar2);
+				g.fillRect(35,80,50,520);
+				g.fillRect(120,80,50,520);
+				g.fillRect(725,80,50,520);
+				g.fillRect(640,80,50,520);
+				g.fillRect(0,0,800,80);
+			}
+		} else if ( gameMode == "medium" ){
+			if( level == 1 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));	
+				g.setColor(ground2);
+				g.fillArc(-200,400,700,500,0,180);
+				g.setColor(ground1);
+				g.fillArc(300,450,700,450,0,180);
+			} else if ( level == 2 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(lava3);
+				g.fillPolygon(new int[] {-150,600,150},new int[] {600,600,275},3);
+				g.setColor(lava2);
+				g.fillPolygon(new int[] {200,875,650},new int[] {600,600,325},3);
+			} else if ( level == 3 ){
+				g2.setPaint(oceanGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(lava3);
+				g.fillArc(0,500,800,200,0,180);
+				g.setColor(ground1);
+				g.fillRect(25,0,50,600);
+				g.fillRect(110,0,50,600);
+				g.fillRect(715,0,50,600);
+				g.fillRect(630,0,50,600);
+				g.setColor(ground2);
+				g.fillRect(35,80,50,520);
+				g.fillRect(120,80,50,520);
+				g.fillRect(725,80,50,520);
+				g.fillRect(640,80,50,520);
+				g.fillRect(0,0,800,80);
+			}
 		}
      
         //Draw ship
@@ -210,6 +269,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		if( lives <= 0 && level != 0 && level != 4 && level != 5 ){
 			g.setColor(Color.white);
 			g.fillRoundRect(350,275,125,40,20,20);
+			g.setFont(levelCleared);
 			g.setColor(Color.red);
 			g.drawString("GAME OVER",375,300);
 		}
@@ -235,25 +295,24 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		
 		//countdown
 		if( countDown == 3 && level == 1 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(375,275,50,40,10,10);
-			g.setColor(green);
-			g.drawString("3",398,300);
+			pokemon3.paintIcon(null,g,375,300);
 		} else if ( countDown == 2 && level == 1 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(375,275,50,40,10,10);
-			g.setColor(green);
-			g.drawString("2",398,300);
+			pokemon2.paintIcon(null,g,375,300);
 		} else if ( countDown == 1 && level == 1 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(375,275,50,40,10,10);
-			g.setColor(green);
-			g.drawString("1",398,300);
+			pokemon1.paintIcon(null,g,375,300);
 		} else if ( countDown == 0 && level == 1 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(370,275,60,40,20,20);
-			g.setColor(green);
-			g.drawString("Start",385,300);
+			pokemonStart.paintIcon(null,g,350,300);
+		}
+		
+		//title screen logistics
+		if( level == 0 ){
+			g.setFont(levelCleared);
+			g.setColor(Color.black);
+			g.drawString("CHOOSE A GAME MODE",310,250);
+			g.drawString("GAMEMODE: " + gameMode.toUpperCase(),320,280);
+			g.drawString("SLOWER ENEMIES",130,475);
+			g.drawString("FASTER ENEMIES",330,475);
+			g.drawString("ENEMIES SHOOT BACK",515,475);
 		}
     } 
  
@@ -472,9 +531,12 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e){
-		if( e.getSource() == startEasy ){
+		if( e.getSource() == start ){
 			level = 1;
-			startEasy.setVisible(false);
+			start.setVisible(false);
+			easyButton.setVisible(false);
+			mediumButton.setVisible(false);
+			hardButton.setVisible(false);
 			lives = 3;
 			s1.changeLives(lives);
 			for( Enemy each : enemies ){
@@ -486,7 +548,28 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		} else if ( e.getSource() == returnToTitleScreen ){
 			level = 0;
 			returnToTitleScreen.setVisible(false);
-			startEasy.setVisible(true);
+			start.setVisible(true);
+			easyButton.setVisible(true);
+			mediumButton.setVisible(true);
+			hardButton.setVisible(true);
+		} else if ( e.getSource() == easyButton ){
+			gameMode = "easy";
+			for( Enemy each : enemies ){
+				each.updateGameMode(gameMode);
+			}
+			boss.updateGameMode(gameMode);
+		} else if( e.getSource() == mediumButton ){
+			gameMode = "medium";
+			for( Enemy each : enemies ){
+				each.updateGameMode(gameMode);
+			}
+			boss.updateGameMode(gameMode);
+		} else if( e.getSource() == hardButton ){
+			gameMode = "hard";
+			for( Enemy each : enemies ){
+				each.updateGameMode(gameMode);
+			}
+			boss.updateGameMode(gameMode);
 		}
 	}
  

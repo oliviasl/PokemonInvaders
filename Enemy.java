@@ -9,7 +9,10 @@ public class Enemy{
 	private int resetX, resetY, level;
 	private Color green;
 	private boolean visible, zigzag, moveDownCount;
+	private String gameMode;
 	private ImageIcon squirtle, wartortle;
+	private ImageIcon charmander, charmeleon;
+	private ImageIcon bulbasaur, ivysaur;
 	
 	public Enemy(int x){
 		//set dimensions
@@ -24,10 +27,15 @@ public class Enemy{
 		green =  new Color(0,255,00);
 		visible = true;
 		level = 1;
+		gameMode = "easy";
 		
 		//image icon
 		squirtle = new ImageIcon("ImageAssets/Squirtle.png");
 		wartortle = new ImageIcon("ImageAssets/Wartortle.png");
+		charmander = new ImageIcon("ImageAssets/Charmander.png");
+		charmeleon = new ImageIcon("ImageAssets/Charmeleon.png");
+		bulbasaur = new ImageIcon("ImageAssets/Bulbasaur.png");
+		ivysaur = new ImageIcon("ImageAssets/Ivysaur.png");
 		
 		//set moving variables
 		moveDownCount = true;
@@ -41,10 +49,24 @@ public class Enemy{
 	
 	public void drawMe(Graphics g){
 		if( visible ){
-			if( level == 1 ){
-				squirtle.paintIcon(null,g,x,y);
-			} else if ( level == 2 ){
-				wartortle.paintIcon(null,g,x,y);
+			if( gameMode == "easy" ){
+				if( level == 1 ){
+					squirtle.paintIcon(null,g,x,y);
+				} else if ( level == 2 ){
+					wartortle.paintIcon(null,g,x,y);
+				}
+			} else if ( gameMode == "medium" ){
+				if( level == 1 ){
+					charmander.paintIcon(null,g,x,y);
+				} else if ( level == 2 ){
+					charmeleon.paintIcon(null,g,x,y);
+				}
+			} else if ( gameMode == "hard" ){
+				if( level == 1 ){
+					bulbasaur.paintIcon(null,g,x,y);
+				} else if ( level == 2 ){
+					ivysaur.paintIcon(null,g,x,y);
+				}
 			}
 		}
 	}
@@ -125,6 +147,10 @@ public class Enemy{
 	
 	public void setLevel(int num){
 		level = num;
+	}
+	
+	public void updateGameMode(String mode){
+		gameMode = mode;
 	}
 	
 }
