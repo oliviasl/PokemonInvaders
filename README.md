@@ -1,2 +1,2 @@
 # PokemonInvaders
-APCS Final Project - Space Invaders style game with Pokémon characters
+APCS First Semester Final Project - Space Invaders style game with Pokémon characters
