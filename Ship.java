@@ -28,14 +28,14 @@ public class Ship{
 	
 	public void moveLeft(){
 		if( x > 0 ){
-			x -= 10;
+			x -= 7;
 		}
 	}
 	
 	
 	public void moveRight(){
 		if( y < 800 ){
-			x += 10;
+			x += 7;
 		}
 	}
 	

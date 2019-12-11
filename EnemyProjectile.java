@@ -86,7 +86,7 @@ public class EnemyProjectile{
 			}
 		} else if ( level == 3 ){
 			if( visible ){
-				y += 5;
+				y += 4;
 			}
 			if( y > 600 ){
 				visible = false;

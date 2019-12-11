@@ -551,8 +551,8 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 							eProjectiles[i].setPosition(enemies[i].getX()+20,enemies[i].getY()+40);
 							eProjectiles[i].shoot();
 						} else {
+							eProjectiles[i].moveDown();
 							if( eProjectiles[i].checkCollision(s1) ){
-								eProjectiles[i].moveDown();
 								for( EnemyProjectile each : eProjectiles ){
 									each.hit();
 								}
@@ -615,7 +615,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 	 
 	public void keyPressed(KeyEvent e){
 		if( e.getKeyCode() == 32 /*spacebar*/ ){
-			if( !p1[projectileCount].getVisible() && level == 1 || level == 2 || level == 3 ){
+			if( !p1[projectileCount].getVisible() && beforeLevelDelay > 4000 && level == 1 || level == 2 || level == 3 ){
 				//change projectile position to match ship's position
 				p1[projectileCount].setPosition(s1.getX()+25,s1.getY());
 				//shoot projectile
