@@ -59,7 +59,7 @@ public class Projectile{
      
 	
     public void checkCollision(Enemy e){
-		if( e.getVisible() ){
+		if( e.getVisible() && visible ){
 			//projectile
 			int pX = x;
 			int pY = y;
@@ -75,12 +75,13 @@ public class Projectile{
 			if( pX+pWidth >= tX && pX <= tX + tWidth  &&  pY+pHeight >= tY && pY <= tY + tHeight ){
 				//set visible of enemy to false
 				e.die();
+				hit();
 			}
 		}
 	}
 	
 	public void checkCollisionBoss(Boss b){
-		if( b.getVisible() ){
+		if( b.getVisible() && visible ){
 			//projectile
 			int pX = x;
 			int pY = y;

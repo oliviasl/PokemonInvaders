@@ -6,9 +6,9 @@ import javax.swing.ImageIcon;
 public class Enemy{
 	
 	private int x, y, width, height;
-	private int resetX, resetY, level;
+	private int resetX, resetY, level, moveDownCount, moveDownCount2;
 	private Color green;
-	private boolean visible, zigzag, moveDownCount;
+	private boolean visible, zigzag;
 	private String gameMode;
 	private ImageIcon squirtle, wartortle;
 	private ImageIcon charmander, charmeleon;
@@ -38,7 +38,8 @@ public class Enemy{
 		ivysaur = new ImageIcon("ImageAssets/Ivysaur.png");
 		
 		//set moving variables
-		moveDownCount = true;
+		moveDownCount = 1;
+		moveDownCount2 = 1;
 		if( (int)(Math.random()*2) == 1 ){
 			zigzag = true;
 		} else {
@@ -116,12 +117,23 @@ public class Enemy{
 		} else if ( x == 0 ){
 			zigzag = true;
 		}
-		if( y < 600 ){
-			if( moveDownCount ){
-				y ++;
-				moveDownCount = false;
-			} else {
-				moveDownCount = true;
+		if( gameMode == "easy" || gameMode == "hard" ){
+			if( y < 600 ){
+				if( moveDownCount == 3 ){
+					y ++;
+					moveDownCount = 1;
+				} else {
+					moveDownCount ++;
+				}
+			}
+		} else if ( gameMode == "medium" ){
+			if( y < 600 ){
+				if( moveDownCount2 == 2 ){
+					y ++;
+					moveDownCount2 = 1;
+				} else {
+					moveDownCount2 = 2;
+				}
 			}
 		}
 	}

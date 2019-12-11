@@ -49,10 +49,17 @@ public class Ship{
 		return y;
 	}
 	
+	public int getWidth(){
+		return width;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
 	public int getLives(){
 		return lives;
 	}
-	
 	
 	public boolean checkCollision(Enemy e){
 		if( e.getVisible() ){

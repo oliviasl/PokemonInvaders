@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Boss{
 	
-	private int x, y, width, height, health, moveDownCount;
+	private int x, y, width, height, health, moveDownCount, randNum;
 	private boolean zigzag, visible;
 	private String gameMode;
 	private ImageIcon blastoise, charizard, venusaur;
@@ -18,7 +18,12 @@ public class Boss{
 		moveDownCount = 3;
 		gameMode = "easy";
 		
-		zigzag = true;
+		randNum = (int)(Math.random()*2);
+		if( randNum == 0 ){
+			zigzag = true;
+		} else {
+			zigzag = false;
+		}
 		visible = true;
 		
 		blastoise = new ImageIcon("ImageAssets/Blastoise.png");
@@ -27,7 +32,13 @@ public class Boss{
 	}
 	
 	public void drawMe(Graphics g){
-		blastoise.paintIcon(null,g,x,y);
+		if( gameMode == "easy" ){
+			blastoise.paintIcon(null,g,x,y);
+		} else if ( gameMode == "medium" ){
+			charizard.paintIcon(null,g,x,y);
+		} else if ( gameMode == "hard" ){
+			venusaur.paintIcon(null,g,x,y);
+		}
 		
 		//health bar
 		if( health == 5 ){
@@ -72,12 +83,18 @@ public class Boss{
 		} else if ( x == 0 ){
 			zigzag = true;
 		}
-		if( y < 600 ){
-			if( moveDownCount == 3 ){
+		if( gameMode == "easy" || gameMode == "hard" ){
+			if( y < 600 ){
+				if( moveDownCount == 3 ){
+					y ++;
+					moveDownCount = 1;
+				} else {
+					moveDownCount ++;
+				}
+			}
+		} else if ( gameMode == "medium" ){
+			if( y < 600 ){
 				y ++;
-				moveDownCount = 1;
-			} else {
-				moveDownCount ++;
 			}
 		}
 	}
@@ -85,7 +102,12 @@ public class Boss{
 	public void reset(){
 		x = 350;
 		y = 0;
-		zigzag = true;
+		randNum = (int)(Math.random()*2);
+		if( randNum == 0 ){
+			zigzag = true;
+		} else {
+			zigzag = false;
+		}
 		health = 5;
 		visible = true;
 	}
@@ -135,6 +157,16 @@ public class Boss{
 	
 	public void updateGameMode(String mode){
 		gameMode = mode;
+		if( gameMode == "easy" ){
+			width = 160;
+			height = 170;
+		} else if ( gameMode == "medium" ){
+			width = 200;
+			height = 200;
+		} else if ( gameMode == "hard" ){
+			width = 200;
+			height = 200;
+		} 
 	}
 	
 }

@@ -20,16 +20,20 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
     private Ship s1;
 	private Enemy[] enemies;
 	private Boss boss;
+	private EnemyProjectile[] eProjectiles;
 	private boolean visible;
 	private String gameMode;
 	private int score, lives, level, betweenLevelDelay, countDown, beforeLevelDelay, projectileCount;
 	private Color green, ocean1, ocean2, ocean3, sand1, sand2, grayPillar1, grayPillar2;
 	private Color lava1, lava2, lava3, ground1, ground2;
+	private Color grass1, grass2, grass3, wood1, wood2;
 	private Font levelCleared;
-	private GradientPaint oceanGradient;
+	private GradientPaint oceanGradient, lavaGradient, grassGradient;
 	private JButton start, returnToTitleScreen, easyButton, mediumButton, hardButton;
 	private ImageIcon pokeInvadersLogo, pokemon1, pokemon2, pokemon3, pokemonStart, winPikachu, losePikachu;
 	private ImageIcon youWin, gameOver, gameOverMessage;
+	private ImageIcon level1Cleared, level2Cleared, level3Cleared;
+	private ImageIcon grassIcon, fireIcon, waterIcon;
     
 	
     public Screen(){
@@ -43,6 +47,10 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		enemies = new Enemy[10];
 		for(int i = 0;i < enemies.length;i ++){
 			enemies[i] = new Enemy((i+1)*60);
+		}
+		eProjectiles = new EnemyProjectile[11];
+		for(int i = 0;i < eProjectiles.length;i ++){
+			eProjectiles[i] = new EnemyProjectile(-20,20);
 		}
 		
 		//logistics
@@ -66,17 +74,24 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		sand2 = new Color(222,178,75);
 		grayPillar1 = new Color(69,85,99);
 		grayPillar2 = new Color(56,70,82);
-		lava1 = new Color(255,110,20);
+		lava1 = new Color(250,123,45);
 		lava2 = new Color(222,33,0);
-		lava3 = new Color(209,21,0);
+		lava3 = new Color(186,20,2);
 		ground1 = new Color(130,59,21);
 		ground2 = new Color(112,23,1);
+		grass1 = new Color(125,255,82);
+		grass2 = new Color(16,150,2);
+		grass3 = new Color(16,97,7);
+		wood1 = new Color(143,73,27);
+		wood2 = new Color(97,48,13);
 		
 		//fonts
 		levelCleared = new Font("TimesRoman", Font.BOLD, 15);
 		
 		//gradient
 		oceanGradient = new GradientPaint(0,0,ocean1,0,600,ocean2);
+		lavaGradient = new GradientPaint(0,0,lava1,0,600,lava2);
+		grassGradient = new GradientPaint(0,0,grass1,0,600,grass2);
 		
 		//buttons
 		start = new JButton("START");
@@ -100,7 +115,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		hardButton.addActionListener(this);
 		
 		returnToTitleScreen = new JButton("RETURN TO TITLE SCREEN");
-		returnToTitleScreen.setBounds(300,220,200,50);
+		returnToTitleScreen.setBounds(300,230,200,50);
 		add(returnToTitleScreen);
 		returnToTitleScreen.addActionListener(this);
 		returnToTitleScreen.setVisible(false);
@@ -116,6 +131,12 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		youWin = new ImageIcon("ImageAssets/YouWin.png");
 		gameOver = new ImageIcon("ImageAssets/GameOver.png");
 		gameOverMessage = new ImageIcon("ImageAssets/GameOverMessage.png");
+		level1Cleared = new ImageIcon("ImageAssets/Level1Cleared.png");
+		level2Cleared = new ImageIcon("ImageAssets/Level2Cleared.png");
+		level3Cleared = new ImageIcon("ImageAssets/Level3Cleared.png");
+		grassIcon = new ImageIcon("ImageAssets/GrassIcon.png");
+		fireIcon = new ImageIcon("ImageAssets/FireIcon.png");
+		waterIcon = new ImageIcon("ImageAssets/WaterIcon.png");
 		
 		setLayout(null);
 		setFocusable(true);
@@ -138,7 +159,10 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		if( level == 0 ){
 			g.setColor(Color.white);
 			g.fillRect(0,0,800,600);
-			pokeInvadersLogo.paintIcon(null,g,100,100);
+			pokeInvadersLogo.paintIcon(null,g,100,80);
+			grassIcon.paintIcon(null,g,550,290);
+			fireIcon.paintIcon(null,g,350,290);
+			waterIcon.paintIcon(null,g,150,290);
 		} else if ( level == 4 ){
 			g.setColor(Color.green);
 			g.fillRect(0,0,800,600);
@@ -148,7 +172,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		} else if ( level == 5 ){
 			g.setColor(Color.red);
 			g.fillRect(0,0,800,600);
-			losePikachu.paintIcon(null,g,100,280);
+			losePikachu.paintIcon(null,g,100,290);
 			gameOver.paintIcon(null,g,100,50);
 			returnToTitleScreen.setVisible(true);
 		}
@@ -187,21 +211,21 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			}
 		} else if ( gameMode == "medium" ){
 			if( level == 1 ){
-				g2.setPaint(oceanGradient);
+				g2.setPaint(lavaGradient);
 				g2.fill(new Rectangle2D.Double(0,0,800,600));	
 				g.setColor(ground2);
 				g.fillArc(-200,400,700,500,0,180);
 				g.setColor(ground1);
 				g.fillArc(300,450,700,450,0,180);
 			} else if ( level == 2 ){
-				g2.setPaint(oceanGradient);
+				g2.setPaint(lavaGradient);
 				g2.fill(new Rectangle2D.Double(0,0,800,600));
 				g.setColor(lava3);
 				g.fillPolygon(new int[] {-150,600,150},new int[] {600,600,275},3);
 				g.setColor(lava2);
 				g.fillPolygon(new int[] {200,875,650},new int[] {600,600,325},3);
 			} else if ( level == 3 ){
-				g2.setPaint(oceanGradient);
+				g2.setPaint(lavaGradient);
 				g2.fill(new Rectangle2D.Double(0,0,800,600));
 				g.setColor(lava3);
 				g.fillArc(0,500,800,200,0,180);
@@ -217,6 +241,38 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 				g.fillRect(640,80,50,520);
 				g.fillRect(0,0,800,80);
 			}
+		} else if ( gameMode == "hard" ){
+			if( level == 1 ){
+				g2.setPaint(grassGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));	
+				g.setColor(wood2);
+				g.fillArc(-200,400,700,500,0,180);
+				g.setColor(wood1);
+				g.fillArc(300,450,700,450,0,180);
+			} else if ( level == 2 ){
+				g2.setPaint(grassGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(grass3);
+				g.fillPolygon(new int[] {-150,600,150},new int[] {600,600,275},3);
+				g.setColor(grass2);
+				g.fillPolygon(new int[] {200,875,650},new int[] {600,600,325},3);
+			} else if ( level == 3 ){
+				g2.setPaint(grassGradient);
+				g2.fill(new Rectangle2D.Double(0,0,800,600));
+				g.setColor(grass3);
+				g.fillArc(0,500,800,200,0,180);
+				g.setColor(wood1);
+				g.fillRect(25,0,50,600);
+				g.fillRect(110,0,50,600);
+				g.fillRect(715,0,50,600);
+				g.fillRect(630,0,50,600);
+				g.setColor(wood2);
+				g.fillRect(35,80,50,520);
+				g.fillRect(120,80,50,520);
+				g.fillRect(725,80,50,520);
+				g.fillRect(640,80,50,520);
+				g.fillRect(0,0,800,80);
+			}
 		}
      
         //Draw ship
@@ -226,6 +282,11 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		
         //Draw Projectile
 		for( Projectile each : p1 ){
+			each.drawMe(g);
+		}
+		
+		//Draw enemy projectile
+		for( EnemyProjectile each : eProjectiles ){
 			each.drawMe(g);
 		}
 		
@@ -245,6 +306,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		
 		//show score, lives, and level
 		g.setColor(Color.white);
+		g.setFont(levelCleared);
 		if( level == 1 || level == 2 || level == 3 ){
 			g.drawString("Score: " + score,700,500);
 			//change lives if touched player
@@ -267,30 +329,17 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		
 		//Game over
 		if( lives <= 0 && level != 0 && level != 4 && level != 5 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(350,275,125,40,20,20);
-			g.setFont(levelCleared);
-			g.setColor(Color.red);
-			g.drawString("GAME OVER",375,300);
+			gameOverMessage.paintIcon(null,g,300,300);
 		}
 		
 		//level cleared and move to level 2
 		g.setFont(levelCleared);
 		if( score == 5 && level == 1 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(320,275,175,40,20,20);
-			g.setColor(green);
-			g.drawString("LEVEL 1 CLEARED",340,300);
+			level1Cleared.paintIcon(null,g,250,300);
 		} else if ( score == 10 && level == 2 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(320,275,175,40,20,20);
-			g.setColor(green);
-			g.drawString("LEVEL 2 CLEARED",340,300);
+			level2Cleared.paintIcon(null,g,250,300);
 		} else if ( score == 1 && level == 3 ){
-			g.setColor(Color.white);
-			g.fillRoundRect(320,275,175,40,20,20);
-			g.setColor(green);
-			g.drawString("LEVEL 3 CLEARED",340,300);
+			level3Cleared.paintIcon(null,g,250,300);
 		}
 		
 		//countdown
@@ -308,10 +357,10 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 		if( level == 0 ){
 			g.setFont(levelCleared);
 			g.setColor(Color.black);
-			g.drawString("CHOOSE A GAME MODE",310,250);
-			g.drawString("GAMEMODE: " + gameMode.toUpperCase(),320,280);
+			g.drawString("CHOOSE A GAME MODE",310,230);
+			g.drawString("GAMEMODE: " + gameMode.toUpperCase(),320,260);
 			g.drawString("SLOWER ENEMIES",130,475);
-			g.drawString("FASTER ENEMIES",330,475);
+			g.drawString("FASTER ENEMIES",335,475);
 			g.drawString("ENEMIES SHOOT BACK",515,475);
 		}
     } 
@@ -363,19 +412,19 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 				if( lives > 0 ){
 					for( Enemy each : enemies ){
 						//countdown to start
-						if( beforeLevelDelay == 501 ){
+						if( beforeLevelDelay == 1001 ){
 							countDown = 2;
 							beforeLevelDelay ++;
-						} else if ( beforeLevelDelay == 1001 ) {
+						} else if ( beforeLevelDelay == 2001 ) {
 							countDown = 1;
 							beforeLevelDelay ++;
-						} else if ( beforeLevelDelay == 1501 ) {
+						} else if ( beforeLevelDelay == 3001 ) {
 							countDown = 0;
 							beforeLevelDelay ++;
-						} else if ( beforeLevelDelay == 2001 ) {
+						} else if ( beforeLevelDelay == 4001 ) {
 							each.move();
 							countDown = -1;
-						} else if ( beforeLevelDelay < 2002 ){
+						} else if ( beforeLevelDelay < 4002 ){
 							beforeLevelDelay ++;
 						}
 						//checking if enemies touches the bottom
@@ -395,6 +444,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					//no lives left
 					for( Enemy each : enemies ){
 						each.gameOver();
+					}
+					for( EnemyProjectile each : eProjectiles ){
+						each.hit();
 					}
 					//game over screen
 					if( betweenLevelDelay < 101 ){
@@ -419,6 +471,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 				} else {
 					//no lives left
 					boss.gameOver();
+					for( EnemyProjectile each : eProjectiles ){
+						each.hit();
+					}
 					//game over screen
 					if( betweenLevelDelay < 101 ){
 						betweenLevelDelay ++;
@@ -437,6 +492,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			
 			//level cleared
 			if( score == 5 && level == 1){
+				for( EnemyProjectile each : eProjectiles ){
+						each.hit();
+				}
 				if( betweenLevelDelay < 101 ){
 					betweenLevelDelay ++;
 				} else {
@@ -448,8 +506,14 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					lives = 3;
 					s1.changeLives(lives);
 					betweenLevelDelay = 0;
+					for( EnemyProjectile each : eProjectiles ){
+						each.updateLevel(2);
+					}
 				}
 			} else if ( score == 10 && level == 2 ){
+				for( EnemyProjectile each : eProjectiles ){
+						each.hit();
+				}
 				if( betweenLevelDelay < 101 ){
 					betweenLevelDelay ++;
 				} else {
@@ -461,8 +525,14 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					s1.changeLives(lives);
 					boss.reset();
 					betweenLevelDelay = 0;
+					for( EnemyProjectile each : eProjectiles ){
+						each.updateLevel(3);
+					}
 				}
 			} else if ( score == 1 && level == 3 ){
+				for( EnemyProjectile each : eProjectiles ){
+					each.hit();
+				}
 				boss.gameOver();
 				if( betweenLevelDelay < 101 ){
 					betweenLevelDelay ++;
@@ -473,9 +543,67 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 				}
 			}
 			
+			//enemy projectiles
+			if( gameMode == "hard" ){
+				if( level == 1 && beforeLevelDelay > 4000 ){
+					for(int i = 0;i < eProjectiles.length-1;i += 2){
+						if( !eProjectiles[i].getVisible() && enemies[i].getVisible() ){
+							eProjectiles[i].setPosition(enemies[i].getX()+20,enemies[i].getY()+40);
+							eProjectiles[i].shoot();
+						} else {
+							if( eProjectiles[i].checkCollision(s1) ){
+								eProjectiles[i].moveDown();
+								for( EnemyProjectile each : eProjectiles ){
+									each.hit();
+								}
+								lives --;
+								s1.changeLives(lives);
+								for( Enemy each : enemies ){
+									each.reset();
+								}
+							}
+						}
+					}
+				} else if ( level == 2 ){
+					for(int i = 0;i < eProjectiles.length-1;i ++){
+						if( !eProjectiles[i].getVisible() && enemies[i].getVisible() ){
+							eProjectiles[i].setPosition(enemies[i].getX()+20,enemies[i].getY()+40);
+							eProjectiles[i].shoot();
+						} else {
+							eProjectiles[i].moveDown();
+							if( eProjectiles[i].checkCollision(s1) ){
+								for( EnemyProjectile each : eProjectiles ){
+									each.hit();
+								}
+								lives --;
+								s1.changeLives(lives);
+								for( Enemy each : enemies ){
+									each.reset();
+								}
+							}
+						}
+					}
+				} else if ( level == 3 ){
+					if( !eProjectiles[10].getVisible() && boss.getVisible() ){
+						eProjectiles[10].setPosition(boss.getX()+95,boss.getY()+150);
+						eProjectiles[10].shoot();
+					} else {
+						eProjectiles[10].moveDown();
+						if( eProjectiles[10].checkCollision(s1) ){
+							for( EnemyProjectile each : eProjectiles ){
+									each.hit();
+							}
+							lives --;
+							s1.changeLives(lives);
+							boss.reset();
+						}
+					}
+				}
+			}
+			
             //wait for .01 second
             try {
-                Thread.sleep(10);
+                Thread.sleep(9);
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -487,7 +615,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 	 
 	public void keyPressed(KeyEvent e){
 		if( e.getKeyCode() == 32 /*spacebar*/ ){
-			if( !p1[projectileCount].getVisible() ){
+			if( !p1[projectileCount].getVisible() && level == 1 || level == 2 || level == 3 ){
 				//change projectile position to match ship's position
 				p1[projectileCount].setPosition(s1.getX()+25,s1.getY());
 				//shoot projectile
@@ -543,6 +671,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 				each.reset();
 				each.setLevel(1);
 				countDown = 3;
+			}
+			for( EnemyProjectile each : eProjectiles ){
+				each.updateLevel(1);
 			}
 			boss.reset();
 		} else if ( e.getSource() == returnToTitleScreen ){
