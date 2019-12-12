@@ -4,7 +4,8 @@ import javax.swing.ImageIcon;
 
 public class Boss{
 	
-	private int x, y, width, height, health, moveDownCount, randNum;
+	private int x, y, width, height, health;
+	private int moveDownCount, moveDownCount2, randNum;
 	private boolean zigzag, visible;
 	private String gameMode;
 	private ImageIcon blastoise, charizard, venusaur;
@@ -16,6 +17,7 @@ public class Boss{
 		height = 170;
 		health = 5;
 		moveDownCount = 3;
+		moveDownCount2 = 2;
 		gameMode = "easy";
 		
 		randNum = (int)(Math.random()*2);
@@ -94,7 +96,12 @@ public class Boss{
 			}
 		} else if ( gameMode == "medium" ){
 			if( y < 600 ){
-				y ++;
+				if( moveDownCount2 == 2 ){
+					y ++;
+					moveDownCount2 = 1;
+				} else {
+					moveDownCount2 = 2;
+				}
 			}
 		}
 	}
@@ -161,11 +168,11 @@ public class Boss{
 			width = 160;
 			height = 170;
 		} else if ( gameMode == "medium" ){
-			width = 200;
+			width = 180;
 			height = 200;
 		} else if ( gameMode == "hard" ){
 			width = 200;
-			height = 200;
+			height = 190;
 		} 
 	}
 	
