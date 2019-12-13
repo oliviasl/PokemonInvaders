@@ -12,6 +12,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import javax.swing.JOptionPane;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
  
  
 public class Screen extends JPanel implements KeyListener, ActionListener{
@@ -37,6 +44,8 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
     
 	
     public Screen(){
+    
+    	
         //characters/assets
         s1 = new Ship(375,500);
         p1 = new Projectile[3];
@@ -312,6 +321,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			//change lives if touched player
 			if( level == 1 || level == 2 ){
 				if( lives > s1.getLives() ){
+					playSound("SoundAssets/LoseLife.wav");
 					for( Enemy each : enemies ){
 						each.reset();
 					}
@@ -429,6 +439,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 						}
 						//checking if enemies touches the bottom
 						if( each.touchBottom() ){
+							playSound("SoundAssets/LoseLife.wav");
 							lives --;
 							s1.changeLives(lives);
 							for( Enemy each2 : enemies ){
@@ -437,7 +448,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 						}
 						//checking if enemies touches the player
 						if( s1.checkCollision(each) ){
-							break;
+							for( Enemy each2 : enemies ){
+								each2.reset();
+							}
 						}
 					}
 				} else {
@@ -462,6 +475,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					boss.move();
 					//checking if boss touches the bottom
 					if( boss.touchBottom() ){
+						playSound("SoundAssets/LoseLife.wav");
 						lives --;
 						s1.changeLives(lives);
 						boss.reset();
@@ -557,6 +571,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 									each.hit();
 								}
 								lives --;
+								playSound("SoundAssets/LoseLife.wav");
 								s1.changeLives(lives);
 								for( Enemy each : enemies ){
 									each.reset();
@@ -576,6 +591,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 									each.hit();
 								}
 								lives --;
+								playSound("SoundAssets/LoseLife.wav");
 								s1.changeLives(lives);
 								for( Enemy each : enemies ){
 									each.reset();
@@ -594,6 +610,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 									each.hit();
 							}
 							lives --;
+							playSound("SoundAssets/LoseLife.wav");
 							s1.changeLives(lives);
 							boss.reset();
 						}
@@ -616,6 +633,8 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 	public void keyPressed(KeyEvent e){
 		if( e.getKeyCode() == 32 /*spacebar*/ ){
 			if( !p1[projectileCount].getVisible() && beforeLevelDelay > 4000 && level == 1 || level == 2 || level == 3 ){
+				//play shoot
+				playSound("SoundAssets/Shoot.wav");
 				//change projectile position to match ship's position
 				p1[projectileCount].setPosition(s1.getX()+25,s1.getY());
 				//shoot projectile
@@ -703,5 +722,17 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			boss.updateGameMode(gameMode);
 		}
 	}
+ 
+ 	public void playSound(String filepath){
+ 		InputStream music;
+ 		
+ 		try{
+ 			music = new FileInputStream(new File(filepath));
+ 			AudioStream audios = new AudioStream(music);
+ 			AudioPlayer.player.start(audios);
+ 		} catch(Exception e) {
+ 			JOptionPane.showMessageDialog(null,"Error");
+ 		}
+ 	}
  
 }

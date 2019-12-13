@@ -1,6 +1,13 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import javax.swing.JOptionPane;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
  
 public class Projectile{
     
@@ -76,6 +83,7 @@ public class Projectile{
 				//set visible of enemy to false
 				e.die();
 				hit();
+				playSound("SoundAssets/hit.wav");
 			}
 		}
 	}
@@ -99,12 +107,25 @@ public class Projectile{
 				hit();
 				setPosition(-20,500);
 				b.loseHealth();
+				playSound("SoundAssets/hit.wav");
 			}
 		}
 	}
  	
  	public boolean getVisible(){
  		return visible;
+ 	}
+ 	
+ 	 public void playSound(String filepath){
+ 		InputStream music;
+ 		
+ 		try{
+ 			music = new FileInputStream(new File(filepath));
+ 			AudioStream audios = new AudioStream(music);
+ 			AudioPlayer.player.start(audios);
+ 		} catch(Exception e) {
+ 			JOptionPane.showMessageDialog(null,"Error");
+ 		}
  	}
  
 }
