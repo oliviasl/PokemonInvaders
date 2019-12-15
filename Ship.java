@@ -91,7 +91,7 @@ public class Ship{
 		return false;
 	}
 	
-	public void checkCollisionBoss(Boss b){
+	public boolean checkCollisionBoss(Boss b){
 		if( b.getVisible() ){
 			//ship
 			int sX = x;
@@ -108,8 +108,10 @@ public class Ship{
 			if( sX+sWidth >= tX && sX <= tX + tWidth  &&  sY+sHeight >= tY && sY <= tY + tHeight ){
 				//set visible of enemy to false
 				lives --;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public void changeLives(int num){

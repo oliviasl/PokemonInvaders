@@ -481,7 +481,9 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 						boss.reset();
 					}
 					//checking if boss touches the player
-					s1.checkCollisionBoss(boss);
+					if( s1.checkCollisionBoss(boss) ){
+						playSound("SoundAssets/LoseLife.wav");
+					}
 				} else {
 					//no lives left
 					boss.gameOver();
