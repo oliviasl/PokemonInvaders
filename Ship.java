@@ -4,13 +4,15 @@ import javax.swing.ImageIcon;
 
 public class Ship{
     
-	private int x, y, width, height, lives;
+	private int x, y, width, height, lives, originalX, originalY;
     private Color blue;
     private ImageIcon pikachu;
      
     public Ship(int x, int y){    
         this.x = x;
         this.y = y;
+        originalX = x;
+        originalY = y;
         this.width = 65;
         this.height = 65;
         
@@ -59,6 +61,11 @@ public class Ship{
 	
 	public int getLives(){
 		return lives;
+	}
+	
+	public void reset(){
+		x = originalX;
+		y = originalY;
 	}
 	
 	public boolean checkCollision(Enemy e){

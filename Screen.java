@@ -506,6 +506,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			
 			//level cleared
 			if( score == 5 && level == 1){
+				s1.reset();
 				for( EnemyProjectile each : eProjectiles ){
 						each.hit();
 				}
@@ -525,6 +526,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					}
 				}
 			} else if ( score == 10 && level == 2 ){
+				s1.reset();
 				for( EnemyProjectile each : eProjectiles ){
 						each.hit();
 				}
@@ -544,6 +546,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 					}
 				}
 			} else if ( score == 1 && level == 3 ){
+				s1.reset();
 				for( EnemyProjectile each : eProjectiles ){
 					each.hit();
 				}
@@ -686,6 +689,7 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			hardButton.setVisible(false);
 			lives = 3;
 			s1.changeLives(lives);
+			s1.reset();
 			for( Enemy each : enemies ){
 				each.reset();
 				each.setLevel(1);
