@@ -2,12 +2,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import javax.swing.JOptionPane;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+import java.net.URL;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
  
 public class Projectile{
     
@@ -116,16 +113,16 @@ public class Projectile{
  		return visible;
  	}
  	
- 	 public void playSound(String filepath){
- 		InputStream music;
- 		
- 		try{
- 			music = new FileInputStream(new File(filepath));
- 			AudioStream audios = new AudioStream(music);
- 			AudioPlayer.player.start(audios);
- 		} catch(Exception e) {
- 			JOptionPane.showMessageDialog(null,"Error");
- 		}
- 	}
+ public void playSound(String filepath) {
+ 
+        try {
+            URL url = this.getClass().getClassLoader().getResource(filepath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(url));
+            clip.start();
+        } catch (Exception exc) {
+            exc.printStackTrace(System.out);
+        }
+    }
  
 }

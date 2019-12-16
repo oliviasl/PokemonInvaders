@@ -13,12 +13,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import javax.swing.JOptionPane;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+
+import java.net.URL;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
  
  
 public class Screen extends JPanel implements KeyListener, ActionListener{
@@ -728,17 +726,17 @@ public class Screen extends JPanel implements KeyListener, ActionListener{
 			boss.updateGameMode(gameMode);
 		}
 	}
+ 	
+ 	public void playSound(String filepath) {
  
- 	public void playSound(String filepath){
- 		InputStream music;
- 		
- 		try{
- 			music = new FileInputStream(new File(filepath));
- 			AudioStream audios = new AudioStream(music);
- 			AudioPlayer.player.start(audios);
- 		} catch(Exception e) {
- 			JOptionPane.showMessageDialog(null,"Error");
- 		}
- 	}
+        try {
+            URL url = this.getClass().getClassLoader().getResource(filepath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(url));
+            clip.start();
+        } catch (Exception exc) {
+            exc.printStackTrace(System.out);
+        }
+    }
  
 }
