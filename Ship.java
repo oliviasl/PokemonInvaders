@@ -36,7 +36,7 @@ public class Ship{
 	
 	
 	public void moveRight(){
-		if( y < 800 ){
+		if( x < 735 ){
 			x += 7;
 		}
 	}
